@@ -1,0 +1,12 @@
+{
+  "name": "eta-cre-web-routing-js",
+  "version": "0.0.1",
+  "description": null,
+  "license": null,
+  "repository": null,
+  "devDependencies": {
+    "@types/handlebars": "^4.0.36",
+    "@types/jquery": "^3.3.0",
+    "@types/navigo": "^7.0.0"
+  }
+}

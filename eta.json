@@ -2,10 +2,10 @@
   "css": {},
   "redirects": {},
   "dirs": {
-    "controllers": [],
-    "models": [],
-    "staticFiles": [],
-    "views": [],
+    "controllers": ["controllers"],
+    "models": ["models"],
+    "staticFiles": ["static"],
+    "views": ["views"],
     "lifecycleHandlers": [],
     "requestTransformers": [],
     "subpathHandlers": []
