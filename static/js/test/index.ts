@@ -4,12 +4,30 @@ import Navigo from "navigo";
 import URLSearchParamsPolyfill from "url-search-params";
 ("URLSearchParams" in window) || (window.URLSearchParams = URLSearchParamsPolyfill);
 
+const routes: any = ["test/navAway", "test/landing"];
+
+
+/*
+router.on("test", function() {
+    // NOTE absolute paths are important, since the relative root may change
+    $("#root").load("/test/content");
+});
+router.on("test/navAway", () => {
+    $("#root").load("/test/navAway");
+});
+*/
 $(document).ready(function() {
     const router = new Navigo(undefined, false);
-    router.on("/*", function() {
-        // NOTE absolute paths are important, since the relative root may change
-        $("#root").load("/test/content");
+    router.on("test", function() {
+        $("#root").load("/test/landing");
+        console.log("load bitch");
     });
+    for (const r of routes) {
+        router.on(r, function() {
+            $("#root").load("/" + r);
+        });
+    }
+
     if (window.location.search.includes("_spaPath")) {
         // build a parameter parser
         const params = new URLSearchParams(window.location.search);
@@ -18,13 +36,14 @@ $(document).ready(function() {
         // remove _spaPath so we can recreate the original query string
         params.delete("_spaPath");
         // recreate original query string
-        let newPath = originalPath + "?" + params.toString();
-        // if the original query string was empty, remove the trailing "?"
-        if (newPath.slice(-1)[0] === "?") newPath = originalPath;
+        let newPath = originalPath;
+       // if there were other params, add them back
+       if (params.toString()) newPath = originalPath + "?" + params.toString();
         // re-route to the correct path
         router.navigate(newPath, true);
     } else {
         // user loaded the SPA's root, no need to handle server redirects
         router.resolve();
+
     }
 });
