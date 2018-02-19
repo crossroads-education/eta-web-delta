@@ -9,6 +9,7 @@ export default class TestController extends eta.IHttpController {
         // TODO: Implement
     }
 
+    // TODO refactor to make the `spaRoute` flag take a string[] instead of the method itself returning a string[]
     @eta.mvc.flags({
         "spaRoute": true
     })
