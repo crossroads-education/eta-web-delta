@@ -6,26 +6,21 @@ import URLSearchParamsPolyfill from "url-search-params";
 
 const routes: any = ["test/navAway", "test/landing"];
 
+function renderContent(path: string) {
+    $("#root").load(path);
+}
 
-/*
-router.on("test", function() {
-    // NOTE absolute paths are important, since the relative root may change
-    $("#root").load("/test/content");
-});
-router.on("test/navAway", () => {
-    $("#root").load("/test/navAway");
-});
-*/
 $(document).ready(function() {
     const router = new Navigo(undefined, false);
+    // Router to retrieve "index" page content
     router.on("test", function() {
-        $("#root").load("/test/landing");
-        console.log("load bitch");
-    });
+        renderContent("/test/landing");
+    }).resolve();
+    // Universal router for each route passed, render that page's content
     for (const r of routes) {
         router.on(r, function() {
-            $("#root").load("/" + r);
-        });
+            renderContent("/" + r);
+        }).resolve();
     }
 
     if (window.location.search.includes("_spaPath")) {
@@ -44,6 +39,5 @@ $(document).ready(function() {
     } else {
         // user loaded the SPA's root, no need to handle server redirects
         router.resolve();
-
     }
 });
