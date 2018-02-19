@@ -2,12 +2,20 @@
   "css": {},
   "redirects": {},
   "dirs": {
-    "controllers": [],
+    "controllers": [
+      "controllers"
+    ],
     "models": [],
-    "staticFiles": ["static"],
-    "views": ["views"],
+    "staticFiles": [
+      "static"
+    ],
+    "views": [
+      "views"
+    ],
     "lifecycleHandlers": [],
-    "requestTransformers": [],
+    "requestTransformers": [
+      "transformers"
+    ],
     "subpathHandlers": []
   },
   "name": "cre-web-routing",

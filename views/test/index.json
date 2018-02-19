@@ -1,0 +1,6 @@
+{
+  "jsMap": {
+    "navigo": "https://cdn.jsdelivr.net/npm/navigo@7.1.1/lib/navigo.min.js",
+    "url-search-params": "https://cdnjs.cloudflare.com/ajax/libs/url-search-params/0.10.0/url-search-params.amd.js"
+  }
+}
