@@ -6,9 +6,8 @@ export default class SPARouteTransformer extends eta.IRequestTransformer {
     public async onRequest(): Promise<void> {
         if (!SPARouteTransformer.prefixes) {
             // build prefixes array
-            SPARouteTransformer.prefixes = (await Promise.all(this.server.app.getActionsWithFlag<string[]>("spaRoute", this)
-                .map(({ action }) => action())))
-                .reduce((p, v) => p.concat(v), []);
+            SPARouteTransformer.prefixes = this.server.app.getActionsWithFlag("spaRoute", this)
+                .map(a => <string>a.flagValue);
         }
         // check if a prefix exists for this request
         const prefix = SPARouteTransformer.prefixes.find(p => this.req.mvcPath.startsWith(p + "/"));
