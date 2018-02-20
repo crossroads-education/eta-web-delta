@@ -1,6 +1,9 @@
 extends ../../cre-web-shared/views/shared/layout.pug
 include ./shared/navbar.pug
 
+block head
+    style#cssRoot
+
 block body
     +navbar()
     div#root

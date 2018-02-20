@@ -5,6 +5,12 @@ import URLSearchParamsPolyfill from "url-search-params";
 ("URLSearchParams" in window) || ((<any>window).URLSearchParams = URLSearchParamsPolyfill);
 
 function renderContent(path: string) {
+    $("#root, #cssRoot").html("");
+    // TODO figure out how to retrieve view metadata to import additional css and js files
+    const isBase: boolean = path.slice(-1)[0] === "/";
+    if (!isBase) {
+        $("#cssRoot").load("/css" + path + ".css");
+    }
     $.ajax({
         url: path,
         method: "GET",
@@ -13,6 +19,10 @@ function renderContent(path: string) {
         },
         success: data => {
             $("#root").html(data);
+        }
+    }).done(() => {
+        if (!isBase) {
+            SystemJS.import("/js" + path + ".js");
         }
     });
 }
@@ -24,7 +34,7 @@ $(document).ready(function() {
     const router = new Navigo("http://localhost:3000" + basePath, false);
     // Universal router for each route passed, render that page's content
     for (const r of routes) {
-        router.on(r, (p, x ) => {
+        router.on(r, (p, x) => {
             renderContent(basePath + r);
         }).resolve();
     }
