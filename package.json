@@ -1,10 +1,14 @@
 {
-  "name": "cre-web-routing",
+  "name": "cre-web-delta",
   "version": "0.0.1",
-  "description": "",
-  "homepage": "",
-  "repository": "",
-  "contributors": [],
+  "description": "A single-page application framework for Eta",
+  "homepage": "https://github.com/crossroads-education/eta-web-delta",
+  "repository": "https://github.com/crossroads-education/eta-web-delta",
+  "contributors": [
+    "Alex Hicks <alex@crossroadseducation.org> (https://alexhicks.net)",
+    "Brian Huntley <brian@crossroadseducation.org>",
+    "Nathalie Kroeker <nathalie@crossroadseducation.org>"
+  ],
   "engines": {
     "node": ">=8.4.0"
   }
