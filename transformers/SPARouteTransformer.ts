@@ -4,6 +4,7 @@ import * as querystring from "querystring";
 export default class SPARouteTransformer extends eta.IRequestTransformer {
     private static prefixes: string[];
     public async onRequest(): Promise<void> {
+        if (this.req.headers["x-eta-spacomponent"]) return; // don't transform these
         if (!SPARouteTransformer.prefixes) {
             // build prefixes array
             SPARouteTransformer.prefixes = this.server.app.getActionsWithFlag("spaRoute", this)
