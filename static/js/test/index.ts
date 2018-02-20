@@ -4,19 +4,24 @@ import Navigo from "navigo";
 import URLSearchParamsPolyfill from "url-search-params";
 ("URLSearchParams" in window) || (window.URLSearchParams = URLSearchParamsPolyfill);
 
+// Get array of route paths from Application object
 const routes: any = ["test/navAway", "test/landing"];
 
 function renderContent(path: string) {
+    $("#cssRoot, #root").html("");
+    // TODO Implement error handling to handle views/js/css not found - fs.stat?
+    $("#cssRoot").load("/css" + path + ".css");
     $("#root").load(path);
+    SystemJS.import("/js" + path + ".js");
 }
 
 $(document).ready(function() {
     const router = new Navigo(undefined, false);
-    // Router to retrieve "index" page content
+    // Router to retrieve base page's actual content
     router.on("test", function() {
-        renderContent("/test/landing");
+        router.navigate("/test/landing");
     }).resolve();
-    // Universal router for each route passed, render that page's content
+    // Universal router - for each route passed, render that page's full content
     for (const r of routes) {
         router.on(r, function() {
             renderContent("/" + r);
