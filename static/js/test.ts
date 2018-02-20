@@ -2,27 +2,37 @@ import Navigo from "navigo";
 
 // polyfill for URL parameter parser since it's unsupported in IE (and most Edge versions)
 import URLSearchParamsPolyfill from "url-search-params";
-("URLSearchParams" in window) || (window.URLSearchParams = URLSearchParamsPolyfill);
-
-const routes: any = ["test/navAway", "test/landing"];
+("URLSearchParams" in window) || ((<any>window).URLSearchParams = URLSearchParamsPolyfill);
 
 function renderContent(path: string) {
-    $("#root").load(path);
+    $.ajax({
+        url: path,
+        method: "GET",
+        beforeSend: xhr => {
+            xhr.setRequestHeader("x-eta-spacomponent", "true");
+        },
+        success: data => {
+            $("#root").html(data);
+        }
+    });
 }
 
+const routes = ["/index", "/", "/navAway"];
+
 $(document).ready(function() {
-    const router = new Navigo(undefined, false);
-    // Router to retrieve "index" page content
-    router.on("test", function() {
-        renderContent("/test/landing");
-    }).resolve();
+    const basePath = window.location.pathname;
+    const router = new Navigo("http://localhost:3000" + basePath, false);
     // Universal router for each route passed, render that page's content
     for (const r of routes) {
-        router.on(r, function() {
-            renderContent("/" + r);
+        router.on(r, (p, x ) => {
+            renderContent(basePath + r);
         }).resolve();
     }
-
+    router.on("/", () => {
+        router.navigate("/index", false);
+    });
+    router.updatePageLinks();
+    // handle server redirection
     if (window.location.search.includes("_spaPath")) {
         // build a parameter parser
         const params = new URLSearchParams(window.location.search);
@@ -32,12 +42,13 @@ $(document).ready(function() {
         params.delete("_spaPath");
         // recreate original query string
         let newPath = originalPath;
-       // if there were other params, add them back
-       if (params.toString()) newPath = originalPath + "?" + params.toString();
+        // if there were other params, add them back
+        if (params.toString()) newPath += "?" + params.toString();
         // re-route to the correct path
-        router.navigate(newPath, true);
+        router.navigate(newPath.substring(basePath.length), false);
     } else {
         // user loaded the SPA's root, no need to handle server redirects
-        router.resolve();
+        router.navigate("/index", false);
     }
+    router.resolve();
 });
