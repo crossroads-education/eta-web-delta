@@ -23,15 +23,15 @@ const routes = ["/index", "/", "/navAway"];
 $(document).ready(function() {
     const basePath = window.location.pathname;
     const router = new Navigo("http://localhost:3000" + basePath, false);
+    router.on("/", () => {
+        router.navigate("/index", false);
+    }).resolve();
     // Universal router for each route passed, render that page's content
     for (const r of routes) {
         router.on(r, (p, x) => {
             renderContent(basePath + r);
         }).resolve();
     }
-    router.on("/", () => {
-        router.navigate("/index", false);
-    });
     router.updatePageLinks();
     // handle server redirection
     if (window.location.search.includes("_spaPath")) {
@@ -44,7 +44,7 @@ $(document).ready(function() {
         // recreate original query string
         let newPath = originalPath;
         // if there were other params, add them back
-        if (params.toString()) newPath += "?" + params.toString();
+        if (params) newPath += "?" + params.toString();
         // re-route to the correct path
         router.navigate(newPath.substring(basePath.length), false);
     }
