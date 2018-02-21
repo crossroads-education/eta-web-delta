@@ -1,4 +1,5 @@
 import Navigo from "navigo";
+import * as Handlebars from "handlebars";
 
 // polyfill for URL parameter parser since it's unsupported in IE (and most Edge versions)
 import URLSearchParamsPolyfill from "url-search-params";
@@ -13,8 +14,11 @@ function renderContent(path: string) {
             xhr.setRequestHeader("x-eta-delta-component", "true");
         },
         success: data => {
+            const template = Handlebars.compile(data);
+            // Need to get context and helpers
+            const view = template({});
             // hide root until CSS is loaded
-            $("#root").css("display", "none").html(data);
+            $("#root").css("display", "none").html(view);
             // build promises to wait for all <link>s to load
             Promise.all($("#root link").toArray().map(e =>
                 new Promise((resolve, reject) => {
