@@ -13,7 +13,18 @@ function renderContent(path: string) {
             xhr.setRequestHeader("x-eta-delta-component", "true");
         },
         success: data => {
-            $("#root").html(data);
+            // hide root until CSS is loaded
+            $("#root").css("display", "none").html(data);
+            // build promises to wait for all <link>s to load
+            Promise.all($("#root link").toArray().map(e =>
+                new Promise((resolve, reject) => {
+                    // handle errors and loads equally
+                    // if we reject the promise, we'd miss other links that might load fine
+                    $(e).on("load", resolve).on("error", resolve);
+                })
+            )).then(() => {
+                $("#root").removeAttr("style"); // unhide root
+            });
         }
     });
 }
