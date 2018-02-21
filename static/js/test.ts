@@ -5,7 +5,7 @@ import URLSearchParamsPolyfill from "url-search-params";
 ("URLSearchParams" in window) || ((<any>window).URLSearchParams = URLSearchParamsPolyfill);
 
 function renderContent(path: string) {
-    $("#delta-root").html("");
+    $("#root").html("");
     $.ajax({
         url: path,
         method: "GET",
