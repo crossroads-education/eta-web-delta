@@ -47,9 +47,6 @@ $(document).ready(function() {
         if (params.toString()) newPath += "?" + params.toString();
         // re-route to the correct path
         router.navigate(newPath.substring(basePath.length), false);
-    } else {
-        // user loaded the SPA's root, no need to handle server redirects
-        router.navigate("/index", false);
     }
     router.resolve();
 });
