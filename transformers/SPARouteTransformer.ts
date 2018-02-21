@@ -15,7 +15,7 @@ export default class SPARouteTransformer extends eta.IRequestTransformer {
         if (!prefix) return; // if not, ignore this request
         // redirect with _spaPath parameter (handled on client-side)
         this.redirect(prefix + "?" + querystring.stringify(eta._.defaults(this.req.query, {
-            "_spaPath": this.req.mvcPath
+            "_deltaPath": this.req.mvcPath
         })));
     }
 }

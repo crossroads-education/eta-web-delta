@@ -18,35 +18,33 @@ function renderContent(path: string) {
     });
 }
 
-const routes = ["/index", "/", "/navAway"];
+const routes = ["/index", "/navAway"];
 
 $(document).ready(function() {
     const basePath = window.location.pathname;
     const router = new Navigo("http://localhost:3000" + basePath, false);
     router.on("/", () => {
         router.navigate("/index", false);
-    }).resolve();
+    });
     // Universal router for each route passed, render that page's content
     for (const r of routes) {
         router.on(r, (p, x) => {
             renderContent(basePath + r);
-        }).resolve();
+        });
     }
     router.updatePageLinks();
+    // build a parameter parser
+    const urlParams = new URLSearchParams(window.location.search);
     // handle server redirection
-    if (window.location.search.includes("_spaPath")) {
-        // build a parameter parser
-        const params = new URLSearchParams(window.location.search);
+    if (urlParams.has("_deltaPath")) {
         // _spaPath is the server-set original path (redirected from)
-        const originalPath = params.get("_spaPath");
+        const originalPath = urlParams.get("_deltaPath");
         // remove _spaPath so we can recreate the original query string
-        params.delete("_spaPath");
+        urlParams.delete("_deltaPath");
         // recreate original query string
-        let newPath = originalPath;
-        // if there were other params, add them back
-        if (params) newPath += "?" + params.toString();
+        const newPath = originalPath.substring(basePath.length) + (urlParams.toString() ? "?" + urlParams.toString() : ""); // if there were other params, add them back
         // re-route to the correct path
-        router.navigate(newPath.substring(basePath.length), false);
+        router.navigate(newPath, false);
     }
     router.resolve();
 });
