@@ -1,4 +1,3 @@
-import "jquery";
 import Navigo from "navigo";
 
 // polyfill for URL parameter parser since it's unsupported in IE (and most Edge versions)
