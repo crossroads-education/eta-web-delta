@@ -1,3 +1,4 @@
+import "jquery";
 import Navigo from "navigo";
 
 // polyfill for URL parameter parser since it's unsupported in IE (and most Edge versions)
@@ -5,24 +6,15 @@ import URLSearchParamsPolyfill from "url-search-params";
 ("URLSearchParams" in window) || ((<any>window).URLSearchParams = URLSearchParamsPolyfill);
 
 function renderContent(path: string) {
-    $("#root, #cssRoot").html("");
-    // TODO figure out how to retrieve view metadata to import additional css and js files
-    const isBase: boolean = path.slice(-1)[0] === "/";
-    if (!isBase) {
-        $("#cssRoot").load("/css" + path + ".css");
-    }
+    $("#delta-root").html("");
     $.ajax({
         url: path,
         method: "GET",
         beforeSend: xhr => {
-            xhr.setRequestHeader("x-eta-spacomponent", "true");
+            xhr.setRequestHeader("x-eta-delta-component", "true");
         },
         success: data => {
             $("#root").html(data);
-        }
-    }).done(() => {
-        if (!isBase) {
-            SystemJS.import("/js" + path + ".js");
         }
     });
 }
