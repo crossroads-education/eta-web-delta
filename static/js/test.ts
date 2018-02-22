@@ -13,11 +13,11 @@ function renderContent(path: string) {
         beforeSend: xhr => {
             xhr.setRequestHeader("x-eta-delta-component", "true");
         },
-        success: data => {
-            const someObjectPassedByAjax : {foo: string} = {foo: "bar"};
-            const template = Handlebars.compile(data);
+        success: html => {
+            // Prepare Handlebars template from the raw HTML
+            const template = Handlebars.compile(html);
             // Need to get context and helpers
-            const view = template(someObjectPassedByAjax);
+            const view = template({});
             // hide root until CSS is loaded
             $("#root").css("display", "none").html(view);
             // build promises to wait for all <link>s to load
