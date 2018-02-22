@@ -8,7 +8,13 @@
     "noImplicitReturns": true,
     "preserveConstEnums": true,
     "skipLibCheck": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ScriptHost",
+      "ES2017"
+    ]
   },
   "compileOnSave": true,
   "buildOnSave": false,
