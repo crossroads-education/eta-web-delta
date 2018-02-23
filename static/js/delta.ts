@@ -34,7 +34,8 @@ function renderContent(path: string) {
     });
 }
 
-const routes = ["/index", "/navAway"];
+// TODO get these routes from directory with same base name as this file
+const routes = ["/index", "navAway"];
 
 $(document).ready(function() {
     const basePath = window.location.pathname;
@@ -57,8 +58,8 @@ $(document).ready(function() {
         const originalPath = urlParams.get("_deltaPath");
         // remove _spaPath so we can recreate the original query string
         urlParams.delete("_deltaPath");
-        // recreate original query string
-        const newPath = originalPath.substring(basePath.length) + (urlParams.toString() ? "?" + urlParams.toString() : ""); // if there were other params, add them back
+        // recreate original query string with params if necessary
+        const newPath = originalPath.substring(basePath.length) + (urlParams.toString() ? "?" + urlParams.toString() : "");
         // re-route to the correct path
         router.navigate(newPath, false);
     }

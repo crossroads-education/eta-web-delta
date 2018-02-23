@@ -3,5 +3,7 @@ extends ../../cre-web-shared/views/shared/layout.pug
 include ./shared/navbar.pug
 
 block body
+    block before-root
     +navbar()
     div#root
+    block after-root
