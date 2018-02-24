@@ -3,5 +3,7 @@ include ../../../cre-web-shared/views/shared/layout-base.pug
 +layout-css()
 +layout-js(false)
 
-script#delta-template(type="text/x-handlebars-template")
-    block delta-template
+mixin delta-template
+    script#delta-template(type="text/x-handlebars-template")
+
+block delta-component

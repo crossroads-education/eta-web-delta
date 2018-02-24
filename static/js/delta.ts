@@ -1,8 +1,8 @@
 import Navigo from "navigo";
-import * as Handlebars from "handlebars";
 
 // polyfill for URL parameter parser since it's unsupported in IE (and most Edge versions)
 import URLSearchParamsPolyfill from "url-search-params";
+
 ("URLSearchParams" in window) || ((<any>window).URLSearchParams = URLSearchParamsPolyfill);
 
 function renderContent(path: string) {
@@ -13,11 +13,7 @@ function renderContent(path: string) {
         beforeSend: xhr => {
             xhr.setRequestHeader("x-eta-delta-component", "true");
         },
-        success: html => {
-            // Prepare Handlebars template from the raw HTML
-            const template = Handlebars.compile(html);
-            // Need to get context and helpers
-            const view = template({});
+        success: view => {
             // hide root until CSS is loaded
             $("#root").css("display", "none").html(view);
             // build promises to wait for all <link>s to load
@@ -34,22 +30,30 @@ function renderContent(path: string) {
     });
 }
 
-// TODO get these routes from directory with same base name as this file
-const routes = ["/index", "navAway"];
-
-$(document).ready(function() {
-    const basePath = window.location.pathname;
-    const router = new Navigo("http://localhost:3000" + basePath, false);
+async function setupRoutes(basePath: string, router: Navigo): Promise<void> {
+    let routes: string[];
+    // Retrieve this directory's routes before acting on them
+    await $.post("/delta/v1/getRoutes", { basePath }, info => {
+        routes = info.routes;
+    });
+    // Router to handle base page
     router.on("/", () => {
         router.navigate("/index", false);
     });
-    // Universal router for each route passed, render that page's content
+    // Universal router: for each route passed, render that page's content
     for (const r of routes) {
         router.on(r, (p, x) => {
             renderContent(basePath + r);
         });
     }
     router.updatePageLinks();
+    router.resolve();
+}
+
+$(document).ready(function() {
+    const basePath = window.location.pathname;
+    const router = new Navigo("http://localhost:3000" + basePath, false);
+    setupRoutes(basePath, router);
     // build a parameter parser
     const urlParams = new URLSearchParams(window.location.search);
     // handle server redirection
@@ -63,5 +67,4 @@ $(document).ready(function() {
         // re-route to the correct path
         router.navigate(newPath, false);
     }
-    router.resolve();
 });
