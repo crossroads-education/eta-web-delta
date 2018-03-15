@@ -8,11 +8,11 @@ export default class SPARouteTransformer extends eta.LifecycleHandler {
     }[];
 
     public register(): void {
-        this.app.on("app:start", this.onAppStart.bind(this));
+        this.app.on("database:connect", this.onDatabaseConnect.bind(this));
         this.app.on("request", this.onRequest.bind(this));
     }
 
-    private async onAppStart(): Promise<void> {
+    private async onDatabaseConnect(): Promise<void> {
         // build prefixes array
         this.routes = this.app.getActionsWithFlag("spa", <any>{})
             .map(a => <any>a.flagValue);
