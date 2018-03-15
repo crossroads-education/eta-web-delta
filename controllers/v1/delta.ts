@@ -7,12 +7,12 @@ export default class DeltaController extends eta.IHttpController {
     @eta.mvc.raw()
     @eta.mvc.post()
     public async getRoutes( { basePath }: { basePath: string} ): Promise<void> {
-        let routes: string[] = [];
+        const routes: string[] = [];
         // get routes from Eta Application
         Object.keys(this.server.app.viewFiles).forEach(r => {
-            let route: any = r.split("/")
+            const route: any = r.split("/");
             // check that the route comes from the base directory and is not the base file itself
-            if (route.slice(0,2).join("/") === basePath && r !== basePath) {
+            if (route.slice(0, 2).join("/") === basePath && r !== basePath) {
                 // push the route without the base path prefix
                 routes.push("/" + route.slice(2).join("/"));
             }
