@@ -12,11 +12,9 @@
     "views": [
       "views"
     ],
-    "lifecycleHandlers": [],
-    "requestTransformers": [
-      "transformers"
-    ],
-    "subpathHandlers": []
+    "lifecycleHandlers": [
+      "lifecycle"
+    ]
   },
   "name": "cre-web-delta",
   "dependencies": [],
