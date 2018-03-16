@@ -7,15 +7,11 @@ export default class DeltaController extends eta.IHttpController {
     @eta.mvc.raw()
     @eta.mvc.get()
     public async routes({ basePath }: { basePath: string}): Promise<void> {
-        const routes: string[] = [];
-        Object.keys(this.server.app.staticFiles).forEach(r => {
-            if (!r.endsWith(".js")) return;
-            r = r.replace(/\.js$/, "");
-            // check that the route comes from the base directory and is not the base file itself
-            if (r.startsWith(basePath) && r !== basePath) {
-                routes.push(r.substring(basePath.length));
-            }
+        this.result(db.GenericApiResult.Success, {
+            routes: Object.keys(this.server.app.viewFiles).filter(mvcPath =>
+                mvcPath.startsWith(basePath + "/") &&
+                this.server.app.staticFiles[`/js${mvcPath}.js`] !== undefined
+            ).map(mvcPath => mvcPath.substring(basePath.length))
         });
-        this.result(db.GenericApiResult.Success, { routes });
     }
 }
