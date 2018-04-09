@@ -1,4 +1,4 @@
-import * as eta from "../eta";
+import * as eta from "@eta/eta";
 import * as querystring from "querystring";
 
 export default class SPARouteTransformer extends eta.LifecycleHandler {
@@ -18,7 +18,7 @@ export default class SPARouteTransformer extends eta.LifecycleHandler {
             .map(a => <any>a.flagValue);
     }
 
-    private async onRequest(http: eta.IRequestHandler): Promise<void> {
+    private async onRequest(http: eta.RequestHandler): Promise<void> {
         if (http.req.headers["x-eta-delta-component"]) return; // don't transform these
         // check if a prefix exists for this request
         const route = this.routes.find(r => http.req.mvcPath.startsWith(r.prefix + "/"));

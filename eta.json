@@ -6,9 +6,7 @@
       "controllers"
     ],
     "models": [],
-    "staticFiles": [
-      "static"
-    ],
+    "staticFiles": [],
     "views": [
       "views"
     ],
