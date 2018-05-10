@@ -4,7 +4,7 @@ import * as querystring from "querystring";
 export default class SPARouteTransformer extends eta.LifecycleHandler {
     private routes: {
         prefix: string;
-        isRoutable: (path: string) => boolean
+        isRoutable(path: string): boolean
     }[];
 
     public register(): void {
